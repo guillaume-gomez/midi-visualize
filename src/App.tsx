@@ -7,12 +7,14 @@ function App() {
   const ref = useRef<HTMLTextAreaElement>(null);
   const refCanvas = useRef<HTMLCanvasElement>(null);
   const [midi, setMidi] = useState<Midi>();
+  const [width, setWidth] = useState<number>(750);
+  const [height, setHeight] = useState<number>(750);
 
   useEffect(() => {
     if(refCanvas.current) {
       const context = refCanvas.current.getContext('2d');
       if(context) {
-        context.clearRect(0, 0, 500, 500);
+        context.clearRect(0, 0, width, height);
       }
     }
     generateCircles();
@@ -47,8 +49,8 @@ function App() {
         return;
       }
       midi.tracks[0].notes.forEach(note => {
-        const x = 500 * Math.random();
-        const y = 500 * Math.random();
+        const x = width * Math.random();
+        const y = height * Math.random();
         const radius = 50 * note.velocity;
 
         context.beginPath();
@@ -76,7 +78,7 @@ function App() {
         </a>
         <input type="file" onChange={loadImage} />
         <textarea ref={ref}/>
-        <canvas ref={refCanvas} width={500} height={500} style={{background: 'red'}} />
+        <canvas ref={refCanvas} width={width} height={height} style={{background: 'red'}} />
       </header>
     </div>
   );

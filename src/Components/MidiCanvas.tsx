@@ -34,13 +34,13 @@ function MidiCanvas({midi} : MidiCanvasInterface ) {
 
   function generateCircles() {
     if(midi && shapes.current) {
-      midi.tracks[0].notes.forEach(note => {
+      midi.tracks[0].notes.forEach((note, index) => {
         const x = width * Math.random();
         const y = height * Math.random();
         const radius = 10 * note.velocity;
-        const duration = note.duration;
+        const duration = note.duration * 1000;
         const elapsedTime = 0;
-        const time = note.time;
+        const time = note.time * 1000;
 
         shapes.current.push({ x, y, radius, duration, elapsedTime, time });
       })
@@ -62,17 +62,70 @@ function MidiCanvas({midi} : MidiCanvasInterface ) {
           context.beginPath();
           context.arc(x, y, radius * (time/1000), 0, 2 * Math.PI);
           context.stroke();
-          shape.elapsedTime = elapsedTime + (deltaTime/1000);
+          shape.elapsedTime = elapsedTime + deltaTime;
           console.log(shape)
         }
       });
-      cleanShapes();
+      cleanShapes(time);
     }
   }
 
-  function cleanShapes() {
+  function cleanShapes(time: number) {
     // REMOVE OLD SHAPES
+    if(shapes.current) {
+      const newShapes = shapes.current.filter((shape :Shape) => shape.time + shape.elapsedTime > shape.duration);
+      shapes.current = newShapes;
+    }
   }
+
+/*  function play() {
+    if (playing && currentMidi) {
+    const now = Tone.now() + 0.1;
+
+    // console.log(currentMidi.tracks);
+    currentMidi.tracks.forEach((track, i) => {
+      if (i !== 0) return
+      let sampleName = track.instrument.name + "_SAMPLE";
+      let synth = new Tone.Sampler(
+        { G4: sampleName + ".wav" },
+        {
+          attack: 0.02,
+          decay: 50,
+          sustain: 50,
+          release: 50,
+          baseUrl: "https://vfwdz.csb.app/Samples/",
+          onload: () => makeLoop()
+        }
+      ).toMaster();
+
+      const makeLoop = () => {
+      //TODO
+      const repeatTimes = {
+        LEAD: "16m"
+      }
+
+      console.log(track.instrument.name)
+
+      let lt = repeatTimes[track.instrument.name]
+        // //schedule all of the events
+        var loop = new Tone.Loop(function(looptime) {
+          track.notes.forEach(note => {
+            synth.triggerAttackRelease(
+              note.name,
+              note.duration,
+              note.time + looptime,
+              note.velocity
+            );
+          });
+        }, lt).start(lt);
+
+        loops.push(loop);
+      };
+
+      synths.push(synth);
+      Tone.Transport.start();
+    });
+  }*/
 
 
   function animate(deltaTime: number, time: number) {

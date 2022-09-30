@@ -34,15 +34,17 @@ function MidiCanvas({midi} : MidiCanvasInterface ) {
 
   function generateCircles() {
     if(midi && shapes.current) {
-      midi.tracks[0].notes.forEach((note, index) => {
-        const x = width * Math.random();
-        const y = height * Math.random();
-        const radius = 10 * note.velocity;
-        const duration = note.duration * 1000;
-        const elapsedTime = 0;
-        const time = note.time * 1000;
+      midi.tracks.forEach(track => {
+        track.notes.forEach((note, index) => {
+          const x = width * Math.random();
+          const y = height * Math.random();
+          const radius = 10 * note.velocity;
+          const duration = note.duration * 1000;
+          const elapsedTime = 0;
+          const time = note.time * 1000;
 
-        shapes.current.push({ x, y, radius, duration, elapsedTime, time });
+          shapes.current.push({ x, y, radius, duration, elapsedTime, time });
+        })
       })
     }
   }
@@ -136,7 +138,7 @@ function MidiCanvas({midi} : MidiCanvasInterface ) {
   }
 
   return (
-    <canvas ref={canvasRef} width={width} height={height} style={{background: 'red'}} />
+    <canvas ref={canvasRef} width={width} height={height} style={{background: 'grey'}} />
   );
 }
 

@@ -79,56 +79,6 @@ function MidiCanvas({midi} : MidiCanvasInterface ) {
     }
   }
 
-/*  function play() {
-    if (playing && currentMidi) {
-    const now = Tone.now() + 0.1;
-
-    // console.log(currentMidi.tracks);
-    currentMidi.tracks.forEach((track, i) => {
-      if (i !== 0) return
-      let sampleName = track.instrument.name + "_SAMPLE";
-      let synth = new Tone.Sampler(
-        { G4: sampleName + ".wav" },
-        {
-          attack: 0.02,
-          decay: 50,
-          sustain: 50,
-          release: 50,
-          baseUrl: "https://vfwdz.csb.app/Samples/",
-          onload: () => makeLoop()
-        }
-      ).toMaster();
-
-      const makeLoop = () => {
-      //TODO
-      const repeatTimes = {
-        LEAD: "16m"
-      }
-
-      console.log(track.instrument.name)
-
-      let lt = repeatTimes[track.instrument.name]
-        // //schedule all of the events
-        var loop = new Tone.Loop(function(looptime) {
-          track.notes.forEach(note => {
-            synth.triggerAttackRelease(
-              note.name,
-              note.duration,
-              note.time + looptime,
-              note.velocity
-            );
-          });
-        }, lt).start(lt);
-
-        loops.push(loop);
-      };
-
-      synths.push(synth);
-      Tone.Transport.start();
-    });
-  }*/
-
-
   function animate(deltaTime: number, time: number) {
     if(canvasRef.current) {
       const context = canvasRef.current.getContext("2d");

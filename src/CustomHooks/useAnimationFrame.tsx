@@ -10,6 +10,7 @@ export default function useAnimationFrame(callback: Function) {
    * the precise time requestAnimationFrame() was called.
    */
   function animate(time: number) {
+    //console.log(time)
     if (previousTimeRef.current !== null) {
       const deltaTime = time - previousTimeRef.current;
       callback(deltaTime, time);
@@ -31,11 +32,6 @@ export default function useAnimationFrame(callback: Function) {
       requestRef.current = requestAnimationFrame(animate);
     }
   }
-
-  useEffect(() => {
-    play();
-    return () => stop();
-  }, []); // Make sure the effect runs only once
 
   return { stop, play };
 };

@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import PlayerManagerReducer from "../CustomHooks/usePlayerManager";
 
 interface PlayerInterface {
-  filepath: string;
+
 }
 
-function Player({filepath} : PlayerInterface ) {
+function Player( {} : PlayerInterface ) {
+  const { filepath } = PlayerManagerReducer.useContainer();
   const ref = useRef<HTMLAudioElement>(null);
   useEffect(() => {
       if(filepath === "") {
@@ -22,6 +24,7 @@ function Player({filepath} : PlayerInterface ) {
         <audio
             ref={ref}
             controls
+            autoPlay={false}
         >
         </audio>
     </figure>

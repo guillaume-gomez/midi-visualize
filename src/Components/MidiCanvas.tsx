@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import useAnimationFrame from "../CustomHooks/useAnimationFrame";
+import PlayerManagerReducer from "../CustomHooks/usePlayerManager";
 import { Midi } from '@tonejs/midi';
 
 interface MidiCanvasInterface {
-  midi: Midi;
+
 }
 
 interface Shape {
@@ -15,12 +16,13 @@ interface Shape {
   time: number;
 }
 
-function MidiCanvas({midi} : MidiCanvasInterface ) {
+function MidiCanvas({} : MidiCanvasInterface ) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(750);
   const [height, setHeight] = useState<number>(750);
   const shapes = useRef<Shape[]>([]);
   const { play, stop } = useAnimationFrame(animate);
+  const { midi } = PlayerManagerReducer.useContainer();
 
   useEffect(() => {
     if(canvasRef.current) {

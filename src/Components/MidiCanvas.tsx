@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import useAnimationFrame from "../CustomHooks/useAnimationFrame";
 import PlayerManagerReducer from "../CustomHooks/usePlayerManager";
+import ExternalActionInterface from "../interfaces";
 import { Midi } from '@tonejs/midi';
 
 interface MidiCanvasInterface {
@@ -16,7 +17,7 @@ interface Shape {
   time: number;
 }
 
-function MidiCanvas({} : MidiCanvasInterface ) {
+const MidiCanvas = forwardRef<ExternalActionInterface, MidiCanvasInterface>(({} , ref ) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [width, setWidth] = useState<number>(750);
   const [height, setHeight] = useState<number>(750);
@@ -33,6 +34,17 @@ function MidiCanvas({} : MidiCanvasInterface ) {
     }
     generateCircles();
   }, [midi]);
+
+  useImperativeHandle(ref, () => ({
+    play() {
+    },
+
+    pause() {
+    },
+
+    reset() {
+    }
+  }));
 
   function generateCircles() {
     if(midi && shapes.current) {
@@ -91,6 +103,6 @@ function MidiCanvas({} : MidiCanvasInterface ) {
   return (
     <canvas ref={canvasRef} width={width} height={height} style={{background: 'grey'}} />
   );
-}
+});
 
 export default MidiCanvas;

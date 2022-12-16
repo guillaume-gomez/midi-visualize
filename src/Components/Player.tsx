@@ -1,35 +1,48 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import PlayerManagerReducer from "../CustomHooks/usePlayerManager";
+import ExternalActionInterface from "../interfaces";
 
 interface PlayerInterface {
 
 }
 
-function Player( {} : PlayerInterface ) {
+
+const Player = forwardRef<ExternalActionInterface, PlayerInterface>(({} , ref ) => {
   const { filepath } = PlayerManagerReducer.useContainer();
-  const ref = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   useEffect(() => {
       if(filepath === "") {
         return;
       }
-      if(ref.current) {
-        ref.current.src = `./samples/${filepath}.mp3`;
-        ref.current.play();
+      if(audioRef.current) {
+        audioRef.current.src = `./samples/${filepath}.mp3`;
+        audioRef.current.play();
       }
-  }, [ref, filepath]);
+  }, [audioRef, filepath]);
+
+  useImperativeHandle(ref, () => ({
+    play() {
+    },
+
+    pause() {
+    },
+
+    reset() {
+    }
+  }));
 
   return (
     <figure>
         <figcaption>Listen to the T-Rex:</figcaption>
         <audio
-            ref={ref}
+            ref={audioRef}
             controls
             autoPlay={false}
         >
         </audio>
     </figure>
   );
-}
+});
 
 
 export default Player;

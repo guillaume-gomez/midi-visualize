@@ -37,7 +37,7 @@ function PlayerManager() {
     <>
       <input type="file" onChange={loadImage} />
       <textarea ref={ref}/>
-      <button disabled={!couldPlay}>
+      <button class="btn btn-primary" disabled={!couldPlay}>
         {couldPlay ? "Play" : "Pause"}
       </button>
       <div>
